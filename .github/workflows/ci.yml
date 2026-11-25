@@ -35,3 +35,5 @@ jobs:
           psql -v ON_ERROR_STOP=1 -f review-2-consultas/01_consultas.sql
           psql -v ON_ERROR_STOP=1 -f review-3-ventana-cte/01_consultas.sql
           psql -v ON_ERROR_STOP=1 -f review-4-vistas-procedimientos/01_objetos.sql
+      - name: Verificar vistas, procedimiento y función
+        run: psql -v ON_ERROR_STOP=1 -f tests/verificar.sql
