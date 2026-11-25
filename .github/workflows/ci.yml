@@ -1,0 +1,37 @@
+name: CI (valida que los scripts SQL se ejecuten)
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  postgres:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: veterinaria
+        ports: ["5432:5432"]
+        options: >-
+          --health-cmd="pg_isready -U postgres"
+          --health-interval=5s --health-timeout=5s --health-retries=20
+    env:
+      PGHOST: localhost
+      PGUSER: postgres
+      PGPASSWORD: postgres
+      PGDATABASE: veterinaria
+    steps:
+      - uses: actions/checkout@v4
+      - name: Review 1 - esquema, datos y ejercicios
+        run: |
+          psql -v ON_ERROR_STOP=1 -f review-1-crud/01_esquema.sql
+          psql -v ON_ERROR_STOP=1 -f review-1-crud/02_datos.sql
+          psql -v ON_ERROR_STOP=1 -f review-1-crud/03_ejercicios.sql
+      - name: Review 2, 3 y 4
+        run: |
+          psql -v ON_ERROR_STOP=1 -f review-2-consultas/01_consultas.sql
+          psql -v ON_ERROR_STOP=1 -f review-3-ventana-cte/01_consultas.sql
+          psql -v ON_ERROR_STOP=1 -f review-4-vistas-procedimientos/01_objetos.sql
