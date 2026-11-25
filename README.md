@@ -1,5 +1,8 @@
 # Reviews de PostgreSQL - Clínica Veterinaria
 
+[![CI](https://github.com/allisonrvargas/review_postgresql/actions/workflows/ci.yml/badge.svg)](https://github.com/allisonrvargas/review_postgresql/actions/workflows/ci.yml)
+[![Licencia: MIT](https://img.shields.io/badge/licencia-MIT-green.svg)](LICENSE)
+
 Repositorio destinado a documentar y almacenar la resolución de los reviews de bases de datos asignados en clase, usando como caso de estudio una clínica veterinaria.
 
 ## 👨‍💻 Información del Estudiante
@@ -33,6 +36,21 @@ mi-review/
 │   └── 01_objetos.sql       # Vistas, procedimiento y función
 └── README.md
 ```
+
+## ▶️ Cómo ejecutarlo
+
+Requiere PostgreSQL 14 o superior. Con Docker:
+
+```bash
+docker run --name veterinaria -e POSTGRES_PASSWORD=postgres -e POSTGRES_DB=veterinaria -p 5432:5432 -d postgres:16
+for f in review-1-crud/01_esquema.sql review-1-crud/02_datos.sql review-1-crud/03_ejercicios.sql \
+         review-2-consultas/01_consultas.sql review-3-ventana-cte/01_consultas.sql \
+         review-4-vistas-procedimientos/01_objetos.sql; do
+  docker exec -i veterinaria psql -U postgres -d veterinaria -v ON_ERROR_STOP=1 < $f
+done
+```
+
+El orden importa: el esquema y los datos del Review 1 los usan los demás. El CI de este repositorio ejecuta todos los scripts en ese orden en cada cambio.
 
 ## 🗃️ Modelo de datos
 
