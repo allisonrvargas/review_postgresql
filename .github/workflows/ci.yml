@@ -24,7 +24,7 @@ jobs:
       PGPASSWORD: postgres
       PGDATABASE: veterinaria
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - name: Review 1 - esquema, datos y ejercicios
         run: |
           psql -v ON_ERROR_STOP=1 -f review-1-crud/01_esquema.sql
